@@ -107683,6 +107683,7 @@ MonoBehaviour:
   teleportText: {fileID: 912313103}
   fadeDuration: 1
   teleportDelay: 1
+  teleportLocation: {x: 0, y: 1, z: -3.9}
 --- !u!135 &1940156094
 SphereCollider:
   m_ObjectHideFlags: 0
