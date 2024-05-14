@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Eye-of-the-sandstorm.sln"
+    "dotnet.defaultSolution": "Whispers in the sand.sln"
 }
