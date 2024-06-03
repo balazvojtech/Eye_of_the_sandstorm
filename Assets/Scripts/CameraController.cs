@@ -1,35 +1,87 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class CameraController : MonoBehaviour
+public class InventoryUI : MonoBehaviour
 {
-    public Transform target; // Reference to the target (capsule) GameObject
-    public float rotationSpeed = 2f; // Speed of camera rotation
-    public float maxVerticalAngle = 80f; // Maximum vertical angle the camera can rotate
+    public GameObject inventoryPanel;
+    public Transform itemsParent;
+    public GameObject itemSlotPrefab;
 
-    private float verticalRotation = 0f;
+    public Text itemNameText;
+    public Text itemDescriptionText;
 
-    void Start()
+    private Inventory inventory;
+    private bool isInventoryOpen = false;
+
+    private void Start()
     {
-        if (target == null)
+        inventory = FindObjectOfType<Inventory>();
+        inventoryPanel.SetActive(false);
+        Cursor.visible = false; // Hide cursor at start
+        Cursor.lockState = CursorLockMode.Locked; // Lock cursor at start
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
         {
-            Debug.LogError("Target not assigned to Camera Controller!");
-            enabled = false; // Disable the script if target is not assigned
-            return;
+            if (isInventoryOpen)
+            {
+                CloseInventory();
+            }
+            else
+            {
+                OpenInventory();
+            }
+        }
+
+        if (isInventoryOpen && Input.GetKeyDown(KeyCode.Escape))
+        {
+            CloseInventory();
         }
     }
 
-    void LateUpdate()
+    public void OpenInventory()
     {
-        // Set camera's position to match the capsule's
-        transform.position = target.position;
+        inventoryPanel.SetActive(true);
+        Time.timeScale = 0f; // Freeze the game
+        isInventoryOpen = true;
+        Cursor.visible = true; // Show cursor when inventory is open
+        Cursor.lockState = CursorLockMode.None; // Unlock cursor when inventory is open
+        UpdateUI();
+    }
 
-        // Camera rotation with mouse input
-        float mouseX = Input.GetAxis("Mouse X") * rotationSpeed;
-        float mouseY = Input.GetAxis("Mouse Y") * rotationSpeed;
+    public void CloseInventory()
+    {
+        inventoryPanel.SetActive(false);
+        Time.timeScale = 1f; // Unfreeze the game
+        isInventoryOpen = false;
+        Cursor.visible = false; // Hide cursor when inventory is closed
+        Cursor.lockState = CursorLockMode.Locked; // Lock cursor when inventory is closed
+    }
 
-        // Rotate the camera vertically within the specified angle limits
-        verticalRotation -= mouseY;
-        verticalRotation = Mathf.Clamp(verticalRotation, -maxVerticalAngle, maxVerticalAngle);
-        transform.localEulerAngles = new Vector3(verticalRotation, transform.localEulerAngles.y + mouseX, 0f);
+    public void UpdateUI()
+    {
+        foreach (Transform child in itemsParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (var item in inventory.items)
+        {
+            GameObject itemSlot = Instantiate(itemSlotPrefab, itemsParent);
+            Button itemButton = itemSlot.GetComponent<Button>();
+            itemButton.onClick.AddListener(() => ShowItemDetails(item));
+            Image iconImage = itemSlot.transform.Find("ItemIcon").GetComponent<Image>();
+            Text nameText = itemSlot.transform.Find("ItemName").GetComponent<Text>();
+            iconImage.sprite = item.icon;
+            nameText.text = item.itemName;
+        }
+    }
+
+    public void ShowItemDetails(InventoryItem item)
+    {
+        itemNameText.text = item.itemName;
+        itemDescriptionText.text = item.description;
     }
 }

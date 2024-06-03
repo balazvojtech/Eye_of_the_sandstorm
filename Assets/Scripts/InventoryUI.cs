@@ -7,6 +7,9 @@ public class InventoryUI : MonoBehaviour
     public Transform itemsParent;
     public GameObject itemSlotPrefab;
 
+    public Text itemNameText;
+    public Text itemDescriptionText;
+
     private Inventory inventory;
     private bool isInventoryOpen = false;
 
@@ -14,6 +17,8 @@ public class InventoryUI : MonoBehaviour
     {
         inventory = FindObjectOfType<Inventory>();
         inventoryPanel.SetActive(false);
+        Cursor.visible = true; // Ensure cursor is visible at start
+        Cursor.lockState = CursorLockMode.Confined; // Lock cursor to the screen
     }
 
     private void Update()
@@ -35,9 +40,9 @@ public class InventoryUI : MonoBehaviour
     {
         inventoryPanel.SetActive(true);
         Time.timeScale = 0f; // Freeze the game
-        Cursor.visible = true; // Show the cursor
-        Cursor.lockState = CursorLockMode.None; // Unlock the cursor
         isInventoryOpen = true;
+        Cursor.visible = true; // Ensure cursor is visible when inventory is open
+        Cursor.lockState = CursorLockMode.Confined; // Lock cursor to the screen
         UpdateUI();
     }
 
@@ -45,8 +50,6 @@ public class InventoryUI : MonoBehaviour
     {
         inventoryPanel.SetActive(false);
         Time.timeScale = 1f; // Unfreeze the game
-        Cursor.visible = false; // Hide the cursor
-        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor
         isInventoryOpen = false;
     }
 
@@ -60,10 +63,18 @@ public class InventoryUI : MonoBehaviour
         foreach (var item in inventory.items)
         {
             GameObject itemSlot = Instantiate(itemSlotPrefab, itemsParent);
+            Button itemButton = itemSlot.GetComponent<Button>();
+            itemButton.onClick.AddListener(() => ShowItemDetails(item));
             Image iconImage = itemSlot.transform.Find("ItemIcon").GetComponent<Image>();
             Text nameText = itemSlot.transform.Find("ItemName").GetComponent<Text>();
             iconImage.sprite = item.icon;
             nameText.text = item.itemName;
         }
+    }
+
+    public void ShowItemDetails(InventoryItem item)
+    {
+        itemNameText.text = item.itemName;
+        itemDescriptionText.text = item.description;
     }
 }
