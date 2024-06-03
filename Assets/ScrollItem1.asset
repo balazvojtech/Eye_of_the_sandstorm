@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb67a287e85ab4902b4b7579036deb17, type: 3}
+  m_Name: ScrollItem1
+  m_EditorClassIdentifier: 
+  itemName: Scroll1
+  icon: {fileID: 21300000, guid: a7a1d09c4c6074abea4bf04528659f4a, type: 3}
+  description: 'This is scroll NO 1. '
