@@ -2,21 +2,18 @@ using UnityEngine;
 
 public class ItemPickup : MonoBehaviour
 {
-    public InventoryItem item;  // Reference to the InventoryItem ScriptableObject
-
-    private Inventory inventory;
-
-    private void Start()
-    {
-        inventory = FindObjectOfType<Inventory>();
-    }
+    public InventoryItem item;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            inventory.AddItem(item);
-            Destroy(gameObject);
+            Inventory inventory = FindObjectOfType<Inventory>();
+            if (inventory != null)
+            {
+                inventory.Add(item); // Correctly call the Add method
+                Destroy(gameObject); // Remove the item from the scene
+            }
         }
     }
 }

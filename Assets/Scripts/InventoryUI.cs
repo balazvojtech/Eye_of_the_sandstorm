@@ -7,12 +7,16 @@ public class InventoryUI : MonoBehaviour
     public Transform itemsParent;
     public GameObject itemSlotPrefab;
 
+    public Text itemNameText;
+    public Text itemDescriptionText;
+
     private Inventory inventory;
     private bool isInventoryOpen = false;
 
     private void Start()
     {
         inventory = FindObjectOfType<Inventory>();
+        inventory.OnInventoryChanged += UpdateUI; // Subscribe to the inventory change event
         inventoryPanel.SetActive(false);
     }
 
@@ -34,9 +38,6 @@ public class InventoryUI : MonoBehaviour
     public void OpenInventory()
     {
         inventoryPanel.SetActive(true);
-        Time.timeScale = 0f; // Freeze the game
-        Cursor.visible = true; // Show the cursor
-        Cursor.lockState = CursorLockMode.None; // Unlock the cursor
         isInventoryOpen = true;
         UpdateUI();
     }
@@ -44,9 +45,6 @@ public class InventoryUI : MonoBehaviour
     public void CloseInventory()
     {
         inventoryPanel.SetActive(false);
-        Time.timeScale = 1f; // Unfreeze the game
-        Cursor.visible = false; // Hide the cursor
-        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor
         isInventoryOpen = false;
     }
 
@@ -60,10 +58,26 @@ public class InventoryUI : MonoBehaviour
         foreach (var item in inventory.items)
         {
             GameObject itemSlot = Instantiate(itemSlotPrefab, itemsParent);
+            Button itemButton = itemSlot.GetComponent<Button>();
+            itemButton.onClick.AddListener(() => ShowItemDetails(item));
             Image iconImage = itemSlot.transform.Find("ItemIcon").GetComponent<Image>();
             Text nameText = itemSlot.transform.Find("ItemName").GetComponent<Text>();
             iconImage.sprite = item.icon;
             nameText.text = item.itemName;
+        }
+    }
+
+    public void ShowItemDetails(InventoryItem item)
+    {
+        itemNameText.text = item.itemName;
+        itemDescriptionText.text = item.description;
+    }
+
+    private void OnDestroy()
+    {
+        if (inventory != null)
+        {
+            inventory.OnInventoryChanged -= UpdateUI; // Unsubscribe to avoid memory leaks
         }
     }
 }

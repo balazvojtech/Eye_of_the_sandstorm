@@ -8,11 +8,17 @@ public class CharacterMovement : MonoBehaviour
     public Transform cameraTransform; // Reference to the camera's transform
     public float jumpCooldown = 1f; // Cooldown time between jumps
     public float sprintSpeed = 8f; // Speed when sprinting
+    public float interactionDistance = 2.0f; // Distance to interact with objects
+    public float holdDistance = 2.0f; // Distance to hold the object in front of the camera
 
     private Rigidbody rb;
     private bool canJump = true; // Flag to determine if the character can jump
     private float originalMoveSpeed; // Original move speed
     private bool isSprinting; // Flag to track sprinting state
+    private GameObject pickedUpObject = null; // Reference to the currently picked up object
+    private Transform originalParent; // Original parent of the picked up object
+    private Vector3 originalScale; // Original scale of the picked up object
+    private Vector3 desiredScale = new Vector3(1f, 1f, 1f); // Desired scale when dropping the object
 
     void Start()
     {
@@ -54,6 +60,12 @@ public class CharacterMovement : MonoBehaviour
         {
             Sprint();
         }
+
+        // Update the position and rotation of the picked-up object
+        if (pickedUpObject != null)
+        {
+            UpdatePickedUpObjectPositionAndRotation();
+        }
     }
 
     void Update()
@@ -93,6 +105,19 @@ public class CharacterMovement : MonoBehaviour
         {
             StopSprint();
         }
+
+        // Check for block interaction input
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (pickedUpObject == null)
+            {
+                TryPickUpObject();
+            }
+            else
+            {
+                DropObject();
+            }
+        }
     }
 
     void StartSprint()
@@ -116,5 +141,46 @@ public class CharacterMovement : MonoBehaviour
     void ResetJump()
     {
         canJump = true; // Enable jumping after cooldown
+    }
+
+    void TryPickUpObject()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, interactionDistance))
+        {
+            if (hit.collider.CompareTag("Block"))
+            {
+                pickedUpObject = hit.collider.gameObject;
+                originalParent = pickedUpObject.transform.parent;
+                pickedUpObject.transform.SetParent(cameraTransform, true); // Preserve world position
+                pickedUpObject.GetComponent<Rigidbody>().isKinematic = true;
+                originalScale = pickedUpObject.transform.localScale; // Store original scale
+            }
+        }
+    }
+
+    void DropObject()
+{
+    // Check if the object is below the terrain
+    RaycastHit hit;
+    if (Physics.Raycast(pickedUpObject.transform.position, Vector3.down, out hit))
+    {
+        if (hit.point.y < 0)
+        {
+            // If the object is below the terrain, move it to the terrain surface
+            pickedUpObject.transform.position = hit.point + Vector3.up * pickedUpObject.transform.localScale.y * 0.5f;
+        }
+    }
+
+    pickedUpObject.GetComponent<Rigidbody>().isKinematic = false;
+    pickedUpObject.transform.SetParent(originalParent, true); // Preserve world position
+    pickedUpObject.transform.localScale = desiredScale; // Set the object's scale to the desired scale
+    pickedUpObject = null;
+}
+
+    void UpdatePickedUpObjectPositionAndRotation()
+    {
+        Vector3 holdPosition = cameraTransform.position + cameraTransform.forward * holdDistance;
+        pickedUpObject.transform.position = holdPosition; // Move the object to the hold position
     }
 }

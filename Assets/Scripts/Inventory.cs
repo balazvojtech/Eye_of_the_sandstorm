@@ -1,14 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Inventory : MonoBehaviour
 {
     public List<InventoryItem> items = new List<InventoryItem>();
 
-    public void AddItem(InventoryItem item)
+    public event Action OnInventoryChanged;
+
+    public void Add(InventoryItem item)
     {
         items.Add(item);
-        Debug.Log(item.itemName + " added to inventory.");
-        // Update the UI here if needed
+        OnInventoryChanged?.Invoke(); // Trigger the event when an item is added
     }
 }
