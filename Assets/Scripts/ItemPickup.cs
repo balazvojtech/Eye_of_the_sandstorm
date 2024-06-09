@@ -10,9 +10,16 @@ public class ItemPickup : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Inventory inventory = FindObjectOfType<Inventory>();
+            QuestManager questManager = FindObjectOfType<QuestManager>(); // Get reference to the QuestManager
+
             if (inventory != null)
             {
                 inventory.Add(item); // Correctly call the Add method
+
+                if (questManager != null)
+                {
+                    questManager.CollectScript(); // Notify the QuestManager
+                }
 
                 // Create an AudioSource to play the pickup sound
                 if (pickupSound != null)

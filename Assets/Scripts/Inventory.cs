@@ -13,4 +13,10 @@ public class Inventory : MonoBehaviour
         items.Add(item);
         OnInventoryChanged?.Invoke(); // Trigger the event when an item is added
     }
+
+    public void DisableInventory()
+    {
+        // Disable the inventory system or relevant components here
+        enabled = false; // For example, disable this script
+    }
 }

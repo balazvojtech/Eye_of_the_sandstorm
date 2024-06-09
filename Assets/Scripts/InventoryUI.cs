@@ -80,4 +80,11 @@ public class InventoryUI : MonoBehaviour
             inventory.OnInventoryChanged -= UpdateUI; // Unsubscribe to avoid memory leaks
         }
     }
+
+    public void DisableInventoryUI()
+{
+    inventoryPanel.SetActive(false);
+    isInventoryOpen = false;
+}
+
 }
