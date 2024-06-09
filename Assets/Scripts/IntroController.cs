@@ -8,12 +8,20 @@ public class IntroController : MonoBehaviour
 {
     public Image blackImage;
     public TextMeshProUGUI[] introTexts;
+    public AudioClip[] introAudioClips; // Add this line
     public float fadeDuration = 1.0f;
     public float textFadeDuration = 0.5f;
     public float textDisplayDuration = 2.0f;
 
+    private AudioSource audioSource; // Add this line
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>(); // Add this line
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>(); // Add this line
+        }
         StartCoroutine(StartIntro());
     }
 
@@ -27,11 +35,22 @@ public class IntroController : MonoBehaviour
         yield return new WaitForSeconds(fadeDuration);
 
         // Display and fade in intro texts
-        foreach (TextMeshProUGUI text in introTexts)
+        for (int i = 0; i < introTexts.Length; i++)
         {
+            TextMeshProUGUI text = introTexts[i];
+            AudioClip clip = introAudioClips.Length > i ? introAudioClips[i] : null; // Get the corresponding audio clip
+
             text.gameObject.SetActive(true);
             text.alpha = 0; // Set alpha to 0 initially
             StartCoroutine(FadeTextIn(text));
+
+            // Play the audio clip
+            if (clip != null)
+            {
+                audioSource.clip = clip;
+                audioSource.Play();
+            }
+
             yield return new WaitForSeconds(textFadeDuration + 0.1f); // Add a small delay for smooth transition
 
             // Wait for textDisplayDuration
