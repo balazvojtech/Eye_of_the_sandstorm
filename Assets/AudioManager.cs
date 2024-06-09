@@ -1,55 +1,40 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class AudioManager : MonoBehaviour
 {
-    public AudioSource audioSource;
     public AudioClip[] audioClips;
-    public float[] delaysBetweenClips; // Array to store the delays between each audio clip in seconds
+    public float[] clipDelays;
+    public string[] dialogueTexts; // Array to hold dialogue texts
 
-    private int currentClipIndex = 0;
+    private AudioSource audioSource;
+    public Text dialogueTextUI; // Reference to the UI text element
 
     private void Start()
     {
-        // Check if there are any audio clips
-        if (audioClips.Length > 0 && audioClips.Length == delaysBetweenClips.Length)
-        {
-            // Start playing the audio clips with specified delays
-            StartCoroutine(PlayAudioClipsWithDelays());
-        }
-        else
-        {
-            Debug.LogWarning("Number of audio clips and delays must be the same.");
-        }
+        audioSource = GetComponent<AudioSource>();
     }
 
-    private IEnumerator PlayAudioClipsWithDelays()
+    public void PlayAudioSequence()
     {
-        // Loop through each audio clip
+        StartCoroutine(PlayDelayedAudioClips());
+    }
+
+    private IEnumerator PlayDelayedAudioClips()
+    {
         for (int i = 0; i < audioClips.Length; i++)
         {
-            // Play the current audio clip
-            PlayCurrentClip();
+            yield return new WaitForSeconds(clipDelays[i]); // Wait for the specified delay
 
-            // Wait for the specified delay
-            yield return new WaitForSeconds(delaysBetweenClips[i]);
-        }
-    }
+            audioSource.clip = audioClips[i];
+            audioSource.Play();
+            dialogueTextUI.text = dialogueTexts[i]; // Update the UI text with the dialogue
+            
+            // Wait for the clip duration
+            yield return new WaitForSeconds(audioClips[i].length);
 
-    private void PlayCurrentClip()
-    {
-        // Set the next clip to play
-        audioSource.clip = audioClips[currentClipIndex];
-        audioSource.Play();
-
-        // Increment the clip index for the next clip
-        currentClipIndex++;
-
-        // Check if all clips have been played
-        if (currentClipIndex >= audioClips.Length)
-        {
-            // Loop back to the beginning if all clips have been played
-            currentClipIndex = 0;
+            dialogueTextUI.text = ""; // Clear the UI text after the clip has finished playing
         }
     }
 }

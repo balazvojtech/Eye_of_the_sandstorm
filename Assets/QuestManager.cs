@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Audio;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
@@ -7,12 +6,10 @@ using System.Collections;
 public class QuestManager : MonoBehaviour
 {
     public TextMeshProUGUI questText; // Reference to the UI Text element
-    public AudioSource backgroundMusic; // Reference to the AudioSource component for background music
-    public AudioClip newBackgroundMusicClip; // The new background music clip
-
     public float fadeDuration = 1.0f; // Duration of the fade effect
     private int totalScripts = 7;
     private int collectedScripts = 0;
+    public AudioManager audioManager; // Reference to the AudioManager script
 
     private void Start()
     {
@@ -37,31 +34,23 @@ public class QuestManager : MonoBehaviour
 
     private IEnumerator EndGameSequence()
     {
-    yield return new WaitForSeconds(10.0f); // Wait for 10 seconds before starting the fade
+        yield return new WaitForSeconds(10.0f); // Wait for 10 seconds before starting the fade
 
-    // Fade out the quest text
-    StartCoroutine(FadeOutQuestText());
+        // Fade out the quest text
+        StartCoroutine(FadeOutQuestText());
 
-    // Trigger dropping of machines
-    MachineDropper[] machineDroppers = FindObjectsOfType<MachineDropper>();
-    foreach (MachineDropper dropper in machineDroppers)
-    {
-        dropper.DropMachine();
+        // Trigger dropping of machines
+        MachineDropper[] machineDroppers = FindObjectsOfType<MachineDropper>();
+        foreach (MachineDropper dropper in machineDroppers)
+        {
+            dropper.DropMachine();
+        }
+
+       yield return new WaitForSeconds(7.0f);
+
+        // Play audio sequence
+        audioManager.PlayAudioSequence();
     }
-
-    // Change background music after the machines land
-    yield return new WaitForSeconds(1.0f); // Adjust timing as needed
-    backgroundMusic.clip = newBackgroundMusicClip;
-    backgroundMusic.Play();
-
-    // Disable the inventory UI
-    InventoryUI inventoryUI = FindObjectOfType<InventoryUI>();
-    if (inventoryUI != null)
-    {
-        inventoryUI.DisableInventoryUI();
-    }
-    }
-
 
     private IEnumerator FadeOutQuestText()
     {
