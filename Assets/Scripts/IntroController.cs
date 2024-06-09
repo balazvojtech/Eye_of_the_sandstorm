@@ -1,35 +1,26 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class IntroController : MonoBehaviour
 {
     public Image blackImage;
     public TextMeshProUGUI[] introTexts;
-    public AudioClip[] introAudioClips; // Add this line
+    public AudioClip[] introAudioClips;
     public float fadeDuration = 1.0f;
     public float textFadeDuration = 0.5f;
     public float textDisplayDuration = 2.0f;
 
-    private AudioSource audioSource; // Add this line
+    private AudioManager2 audioManager2;
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>(); // Add this line
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>(); // Add this line
-        }
-        StartCoroutine(StartIntro());
+        StartCoroutine(PlayIntroAndStartAudioManager());
     }
 
-    IEnumerator StartIntro()
+    IEnumerator PlayIntroAndStartAudioManager()
     {
-        // Disable input
-        Input.ResetInputAxes();
-
         // Fade in black image
         blackImage.CrossFadeAlpha(1, fadeDuration, false);
         yield return new WaitForSeconds(fadeDuration);
@@ -47,8 +38,7 @@ public class IntroController : MonoBehaviour
             // Play the audio clip
             if (clip != null)
             {
-                audioSource.clip = clip;
-                audioSource.Play();
+                AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
             }
 
             yield return new WaitForSeconds(textFadeDuration + 0.1f); // Add a small delay for smooth transition
@@ -65,9 +55,12 @@ public class IntroController : MonoBehaviour
         // Fade out black image
         blackImage.CrossFadeAlpha(0, fadeDuration, false);
 
-        // Enable input
-        yield return new WaitForSeconds(fadeDuration);
-        Input.ResetInputAxes();
+        // Start AudioManager2
+        audioManager2 = FindObjectOfType<AudioManager2>(); // Find AudioManager2 in the scene
+        if (audioManager2 != null)
+        {
+            audioManager2.PlayAudioSequence();
+        }
     }
 
     IEnumerator FadeTextIn(TextMeshProUGUI text)
