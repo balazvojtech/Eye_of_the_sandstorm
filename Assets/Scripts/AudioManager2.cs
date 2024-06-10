@@ -10,10 +10,13 @@ public class AudioManager2 : MonoBehaviour
 
     private AudioSource audioSource;
     public Text dialogueTextUI; // Reference to the UI text element
+    private bool isPlaying = false;
+    private QuestManager2 questManager2;
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        questManager2 = FindObjectOfType<QuestManager2>(); // Find QuestManager2 in the scene
     }
 
     public void PlayAudioSequence()
@@ -23,6 +26,8 @@ public class AudioManager2 : MonoBehaviour
 
     private IEnumerator PlayDelayedAudioClips()
     {
+        isPlaying = true;
+
         for (int i = 0; i < audioClips.Length; i++)
         {
             yield return new WaitForSeconds(clipDelays[i]); // Wait for the specified delay
@@ -36,5 +41,19 @@ public class AudioManager2 : MonoBehaviour
 
             dialogueTextUI.text = ""; // Clear the UI text after the clip has finished playing
         }
+
+        isPlaying = false;
+        questManager2.ShowContinueText(); // Show the "Press F to continue in the story" UI
+    }
+
+    public bool IsPlaying()
+    {
+        return isPlaying;
+    }
+
+    // Example method to play the next dialogue, can be customized
+    public void PlayNextDialogue()
+    {
+        // Add logic to play the next part of the story
     }
 }

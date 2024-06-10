@@ -12,15 +12,18 @@ public class IntroController : MonoBehaviour
     public float textFadeDuration = 0.5f;
     public float textDisplayDuration = 2.0f;
 
-    private AudioManager2 audioManager2;
+    public AudioManager4 audioManager4; // Reference to AudioManager4
 
     void Start()
     {
-        StartCoroutine(PlayIntroAndStartAudioManager());
+        StartCoroutine(StartIntro());
     }
 
-    IEnumerator PlayIntroAndStartAudioManager()
+    IEnumerator StartIntro()
     {
+        // Disable input
+        Input.ResetInputAxes();
+
         // Fade in black image
         blackImage.CrossFadeAlpha(1, fadeDuration, false);
         yield return new WaitForSeconds(fadeDuration);
@@ -55,11 +58,21 @@ public class IntroController : MonoBehaviour
         // Fade out black image
         blackImage.CrossFadeAlpha(0, fadeDuration, false);
 
-        // Start AudioManager2
-        audioManager2 = FindObjectOfType<AudioManager2>(); // Find AudioManager2 in the scene
-        if (audioManager2 != null)
+        // Enable input
+        yield return new WaitForSeconds(fadeDuration);
+        Input.ResetInputAxes();
+
+        // Start AudioManager4 after the black screen fades out
+        // Start AudioManager4 after the black screen fades out
+        if (audioManager4 != null)
         {
-            audioManager2.PlayAudioSequence();
+            yield return new WaitForSeconds(fadeDuration); // Wait for the black screen to fade out
+            audioManager4.PlayAudioSequence(); // Start AudioManager4 after the fade-out
+        }
+
+        else
+        {
+            Debug.LogError("AudioManager4 reference not set in IntroController.");
         }
     }
 
