@@ -8,8 +8,8 @@ OcclusionCullingSettings:
     smallestOccluder: 5
     smallestHole: 0.25
     backfaceThreshold: 100
-  m_SceneGUID: 00000000000000000000000000000000
-  m_OcclusionCullingData: {fileID: 0}
+  m_SceneGUID: 6d2069cd42165a9469cc54a206165bdb
+  m_OcclusionCullingData: {fileID: 36300000, guid: 35c39e66ded15484981d9e1d22f6046f, type: 2}
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
@@ -759,6 +759,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Snow_mountain (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 195392, guid: a85feef60c5e675428276a080c95062c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 495392, guid: a85feef60c5e675428276a080c95062c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -45.48236
@@ -948,6 +952,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 41dc84019e9376b46908ba7afdd1d15e, type: 3}
       propertyPath: m_Name
       value: Snow_mountain (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 41dc84019e9376b46908ba7afdd1d15e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 41dc84019e9376b46908ba7afdd1d15e, type: 3}
       propertyPath: m_LocalScale.x
@@ -1243,6 +1251,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Snow_mountain (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 41dc84019e9376b46908ba7afdd1d15e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 41dc84019e9376b46908ba7afdd1d15e, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.264
@@ -1396,6 +1408,10 @@ PrefabInstance:
     - target: {fileID: 195392, guid: a85feef60c5e675428276a080c95062c, type: 3}
       propertyPath: m_Name
       value: Snow_mountain (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 195392, guid: a85feef60c5e675428276a080c95062c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 495392, guid: a85feef60c5e675428276a080c95062c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1665,7 +1681,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 1000
+  far clip plane: 100
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -1771,6 +1787,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1730654037}
     m_Modifications:
+    - target: {fileID: 195392, guid: a85feef60c5e675428276a080c95062c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 495392, guid: a85feef60c5e675428276a080c95062c, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -1834,6 +1854,10 @@ PrefabInstance:
     - target: {fileID: 195392, guid: a85feef60c5e675428276a080c95062c, type: 3}
       propertyPath: m_Name
       value: Snow_mountain (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 195392, guid: a85feef60c5e675428276a080c95062c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 495392, guid: a85feef60c5e675428276a080c95062c, type: 3}
       propertyPath: m_LocalPosition.x
