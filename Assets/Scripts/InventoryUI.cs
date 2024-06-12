@@ -16,13 +16,12 @@ public class InventoryUI : MonoBehaviour
     private void Start()
     {
         inventory = FindObjectOfType<Inventory>();
-        inventory.OnInventoryChanged += UpdateUI; // Subscribe to the inventory change event
+        inventory.OnInventoryChanged += UpdateUI; // update UI upon change (object pick-up)
         inventoryPanel.SetActive(false);
     }
-
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I)) //inventory open / close
         {
             if (isInventoryOpen)
             {
@@ -35,7 +34,7 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    public void OpenInventory()
+    public void OpenInventory() 
     {
         inventoryPanel.SetActive(true);
         isInventoryOpen = true;
@@ -55,7 +54,7 @@ public class InventoryUI : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (var item in inventory.items)
+        foreach (var item in inventory.items)   // updating Inventory UI - from itemSlot - text + image of each scroll
         {
             GameObject itemSlot = Instantiate(itemSlotPrefab, itemsParent);
             Button itemButton = itemSlot.GetComponent<Button>();
@@ -73,11 +72,11 @@ public class InventoryUI : MonoBehaviour
         itemDescriptionText.text = item.description;
     }
 
-    private void OnDestroy()
+    private void OnDestroy() 
     {
         if (inventory != null)
         {
-            inventory.OnInventoryChanged -= UpdateUI; // Unsubscribe to avoid memory leaks
+            inventory.OnInventoryChanged -= UpdateUI; 
         }
     }
 

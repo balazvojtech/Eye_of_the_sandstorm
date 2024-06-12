@@ -10,7 +10,7 @@ public class PickupPrompt : MonoBehaviour
 
     void Start()
     {
-        // Set the transparency of the pickUpText at the start
+        // pickUpText transparency at 0 at the start
         SetTextTransparency(0f);
     }
 
@@ -39,17 +39,13 @@ public class PickupPrompt : MonoBehaviour
 
     void ShowPickupPrompt()
     {
-        // Enable the UI Text element
         pickUpText.gameObject.SetActive(true);
-        // Set the transparency of the UI Text
         SetTextTransparency(textTransparency);
     }
 
     void HidePickupPrompt()
     {
-        // Disable the UI Text element
         pickUpText.gameObject.SetActive(false);
-        // Set the transparency of the UI Text back to 0
         SetTextTransparency(0f);
     }
 

@@ -21,10 +21,10 @@ public class IntroController2 : MonoBehaviour
 
     IEnumerator StartIntro()
     {
-        // Disable input
+        // Disable input - movement + camera
         Input.ResetInputAxes();
 
-        // Fade in black image
+        // fade into a black image
         blackImage.CrossFadeAlpha(1, fadeDuration, false);
         yield return new WaitForSeconds(fadeDuration);
 
@@ -32,10 +32,10 @@ public class IntroController2 : MonoBehaviour
         for (int i = 0; i < introTexts.Length; i++)
         {
             TextMeshProUGUI text = introTexts[i];
-            AudioClip clip = introAudioClips.Length > i ? introAudioClips[i] : null; // Get the corresponding audio clip
+            AudioClip clip = introAudioClips.Length > i ? introAudioClips[i] : null; // play audio clips in order
 
             text.gameObject.SetActive(true);
-            text.alpha = 0; // Set alpha to 0 initially
+            text.alpha = 0; // Set alpha to 0 initially - transparent
             StartCoroutine(FadeTextIn(text));
 
             // Play the audio clip
@@ -44,9 +44,9 @@ public class IntroController2 : MonoBehaviour
                 AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
             }
 
-            yield return new WaitForSeconds(textFadeDuration + 0.1f); // Add a small delay for smooth transition
+            yield return new WaitForSeconds(textFadeDuration + 0.1f); // add a small delay 
 
-            // Wait for textDisplayDuration
+            // wait for textDisplayDuration
             yield return new WaitForSeconds(textDisplayDuration);
 
             // Fade out the text
@@ -58,7 +58,7 @@ public class IntroController2 : MonoBehaviour
         // Fade out black image
         blackImage.CrossFadeAlpha(0, fadeDuration, false);
 
-        // Enable input
+        // Enable movement
         yield return new WaitForSeconds(fadeDuration);
         Input.ResetInputAxes();
 
@@ -67,10 +67,6 @@ public class IntroController2 : MonoBehaviour
         {
             yield return new WaitForSeconds(fadeDuration); // Wait for the black screen to fade out
             audioManager2.PlayAudioSequence(); // Start AudioManager2 after the fade-out
-        }
-        else
-        {
-            Debug.LogError("AudioManager2 reference not set in IntroController2.");
         }
     }
 
@@ -92,7 +88,7 @@ public class IntroController2 : MonoBehaviour
         while (elapsedTime < textFadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(1 - (elapsedTime / textFadeDuration)); // Reverse Lerp
+            float t = Mathf.Clamp01(1 - (elapsedTime / textFadeDuration)); 
             text.alpha = t;
             yield return null;
         }

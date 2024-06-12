@@ -3,38 +3,31 @@ using UnityEngine;
 public class ItemPickup : MonoBehaviour
 {
     public InventoryItem item;
-    public AudioClip pickupSound; // Reference to the pickup sound
+    public AudioClip pickupSound; // pick-up sound
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             Inventory inventory = FindObjectOfType<Inventory>();
-            QuestManager questManager = FindObjectOfType<QuestManager>(); // Get reference to the QuestManager
+            QuestManager questManager = FindObjectOfType<QuestManager>(); 
 
             if (inventory != null)
             {
-                inventory.Add(item); // Correctly call the Add method
-
+                inventory.Add(item); // adding item to inventory
                 if (questManager != null)
                 {
-                    questManager.CollectScript(); // Notify the QuestManager
+                    questManager.CollectScript(); // reminding quest manager to show correct number of scripts collected
                 }
-
-                // Create an AudioSource to play the pickup sound
                 if (pickupSound != null)
                 {
                     GameObject audioObject = new GameObject("PickupSound");
                     AudioSource audioSource = audioObject.AddComponent<AudioSource>();
                     audioSource.clip = pickupSound;
                     audioSource.Play();
-                    
-                    // Destroy the audio object after the sound has finished playing
-                    Destroy(audioObject, pickupSound.length);
+                    Destroy(audioObject, pickupSound.length); //destroy audio object
                 }
-
-                // Destroy the item immediately
-                Destroy(gameObject);
+                Destroy(gameObject); //destroy item upon pick-up
             }
         }
     }

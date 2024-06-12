@@ -24,55 +24,48 @@ public class IntroController : MonoBehaviour
         // Disable input
         Input.ResetInputAxes();
 
-        // Fade in black image
+        // fade in to black image
         blackImage.CrossFadeAlpha(1, fadeDuration, false);
         yield return new WaitForSeconds(fadeDuration);
 
-        // Display and fade in intro texts
+        // show intro texts
         for (int i = 0; i < introTexts.Length; i++)
         {
             TextMeshProUGUI text = introTexts[i];
-            AudioClip clip = introAudioClips.Length > i ? introAudioClips[i] : null; // Get the corresponding audio clip
+            AudioClip clip = introAudioClips.Length > i ? introAudioClips[i] : null; // play audio clips in order
 
             text.gameObject.SetActive(true);
-            text.alpha = 0; // Set alpha to 0 initially
+            text.alpha = 0; // set alpha to 0 at the start
             StartCoroutine(FadeTextIn(text));
 
-            // Play the audio clip
+            // play audio 
             if (clip != null)
             {
                 AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
             }
 
-            yield return new WaitForSeconds(textFadeDuration + 0.1f); // Add a small delay for smooth transition
+            yield return new WaitForSeconds(textFadeDuration + 0.1f); // small delay so that text doesnt show immediately
 
-            // Wait for textDisplayDuration
+            // wait for textDisplayDuration
             yield return new WaitForSeconds(textDisplayDuration);
 
-            // Fade out the text
+            // fade out the text
             StartCoroutine(FadeTextOut(text));
             yield return new WaitForSeconds(textFadeDuration);
             text.gameObject.SetActive(false);
         }
 
-        // Fade out black image
+        // fade out black image
         blackImage.CrossFadeAlpha(0, fadeDuration, false);
 
-        // Enable input
+        // enable input - movement + camera
         yield return new WaitForSeconds(fadeDuration);
         Input.ResetInputAxes();
 
-        // Start AudioManager4 after the black screen fades out
-        // Start AudioManager4 after the black screen fades out
         if (audioManager4 != null)
         {
-            yield return new WaitForSeconds(fadeDuration); // Wait for the black screen to fade out
-            audioManager4.PlayAudioSequence(); // Start AudioManager4 after the fade-out
-        }
-
-        else
-        {
-            Debug.LogError("AudioManager4 reference not set in IntroController.");
+            yield return new WaitForSeconds(fadeDuration); // wait for the black screen to fade out
+            audioManager4.PlayAudioSequence(); // start playing audio from AudioManager4 after the fade-out of black screen
         }
     }
 

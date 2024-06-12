@@ -6,15 +6,15 @@ public class QuestManager2 : MonoBehaviour
 {
     public GameObject continueTextUI; // Reference to the "Press F to continue in the story" UI element
     public AudioManager2 audioManager2;
-    public AudioManager3 audioManager3; // Reference to AudioManager3
+    public AudioManager3 audioManager3; 
 
     private bool canContinue = false;
 
     void Start()
     {
-        continueTextUI.SetActive(false); // Ensure the UI element is initially disabled
-        audioManager2 = FindObjectOfType<AudioManager2>(); // Find AudioManager2 in the scene
-        audioManager3 = FindObjectOfType<AudioManager3>(); // Find AudioManager3 in the scene
+        continueTextUI.SetActive(false); // at the start must be disabled
+        audioManager2 = FindObjectOfType<AudioManager2>(); 
+        audioManager3 = FindObjectOfType<AudioManager3>(); 
     }
 
     void Update()
@@ -27,16 +27,16 @@ public class QuestManager2 : MonoBehaviour
 
     public void ShowContinueText()
     {
-        continueTextUI.SetActive(true); // Enable the UI element
+        continueTextUI.SetActive(true); // show UI
         canContinue = true;
     }
 
     private void ContinueStory()
     {
-        continueTextUI.SetActive(false); // Disable the UI element
+        continueTextUI.SetActive(false); // disable UI
         canContinue = false;
 
-        // Start AudioManager3 for the next part of the story
+        // start AudioManager3 to continue in the story
         if (audioManager3 != null)
         {
             audioManager3.PlayAudioSequence();

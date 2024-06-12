@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public Transform target; // Reference to the target (capsule) GameObject
-    public float rotationSpeed = 2f; // Speed of camera rotation
-    public float maxVerticalAngle = 80f; // Maximum vertical angle the camera can rotate
+    public Transform target; // reference to capsule - player
+    public float rotationSpeed = 2f; 
+    public float maxVerticalAngle = 80f; // vertical angle at which you can't overpass
 
     private float verticalRotation = 0f;
 
@@ -13,21 +13,21 @@ public class CameraController : MonoBehaviour
         if (target == null)
         {
             Debug.LogError("Target not assigned to Camera Controller!");
-            enabled = false; // Disable the script if target is not assigned
+            enabled = false; // disably if target is not assigned
             return;
         }
     }
 
     void LateUpdate()
     {
-        // Set camera's position to match the capsule's
+        // set camera's position to match the capsule's
         transform.position = target.position;
 
-        // Camera rotation with mouse input
+        // camera rotation with mouse movement
         float mouseX = Input.GetAxis("Mouse X") * rotationSpeed;
         float mouseY = Input.GetAxis("Mouse Y") * rotationSpeed;
 
-        // Rotate the camera vertically within the specified angle limits
+        // rotate the camera vertically within the specified angle limits
         verticalRotation -= mouseY;
         verticalRotation = Mathf.Clamp(verticalRotation, -maxVerticalAngle, maxVerticalAngle);
         transform.localEulerAngles = new Vector3(verticalRotation, transform.localEulerAngles.y + mouseX, 0f);

@@ -6,17 +6,17 @@ public class AudioManager2 : MonoBehaviour
 {
     public AudioClip[] audioClips;
     public float[] clipDelays;
-    public string[] dialogueTexts; // Array to hold dialogue texts
+    public string[] dialogueTexts; // list of dialogue texts
 
     private AudioSource audioSource;
-    public Text dialogueTextUI; // Reference to the UI text element
+    public Text dialogueTextUI; // UI text element
     private bool isPlaying = false;
     private QuestManager2 questManager2;
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        questManager2 = FindObjectOfType<QuestManager2>(); // Find QuestManager2 in the scene
+        questManager2 = FindObjectOfType<QuestManager2>(); 
     }
 
     public void PlayAudioSequence()
@@ -34,12 +34,12 @@ public class AudioManager2 : MonoBehaviour
 
             audioSource.clip = audioClips[i];
             audioSource.Play();
-            dialogueTextUI.text = dialogueTexts[i]; // Update the UI text with the dialogue
+            dialogueTextUI.text = dialogueTexts[i]; // updating text 
             
-            // Wait for the clip duration
+            // waiting until clip finishes
             yield return new WaitForSeconds(audioClips[i].length);
 
-            dialogueTextUI.text = ""; // Clear the UI text after the clip has finished playing
+            dialogueTextUI.text = ""; // clear text after audio ends
         }
 
         isPlaying = false;
@@ -49,11 +49,5 @@ public class AudioManager2 : MonoBehaviour
     public bool IsPlaying()
     {
         return isPlaying;
-    }
-
-    // Example method to play the next dialogue, can be customized
-    public void PlayNextDialogue()
-    {
-        // Add logic to play the next part of the story
     }
 }

@@ -2,23 +2,23 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
-using UnityEngine.SceneManagement; // Add this line for scene management
+using UnityEngine.SceneManagement; 
 
 public class QuestManager : MonoBehaviour
 {
-    public TextMeshProUGUI questText; // Reference to the UI Text element
-    public float fadeDuration = 1.0f; // Duration of the fade effect
+    public TextMeshProUGUI questText; 
+    public float fadeDuration = 1.0f; 
     private int totalScripts = 7;
     private int collectedScripts = 0;
-    public GameObject backgroundMusicObject; // Reference to the GameObject containing BackgroundMusic script
-    public AudioClip newBackgroundMusicClip; // The new background music clip to be played
-    public AudioManager audioManager; // Reference to the AudioManager script
-    public Image fadeImage; // UI Image used for fading to black
+    public GameObject backgroundMusicObject; 
+    public AudioClip newBackgroundMusicClip; // new background music 
+    public AudioManager audioManager; 
+    public Image fadeImage; // black image for fade effect
 
     private void Start()
     {
         UpdateQuestText();
-        fadeImage.color = new Color(0, 0, 0, 0); // Ensure the fade image is initially transparent
+        fadeImage.color = new Color(0, 0, 0, 0); // make the  image black and transparent
     }
 
     public void CollectScript()
@@ -34,17 +34,17 @@ public class QuestManager : MonoBehaviour
 
     private void UpdateQuestText()
     {
-        questText.text = $"Collect hidden scripts ({collectedScripts}/{totalScripts})";
+        questText.text = $"Collect hidden scripts ({collectedScripts}/{totalScripts})"; // showing how many scripts player has collected
     }
 
     private IEnumerator EndGameSequence()
     {
-        yield return new WaitForSeconds(10.0f); // Wait for 10 seconds before starting the fade
+        yield return new WaitForSeconds(10.0f); // wait for 10 seconds before starting the fade - so that the dialogue of picked script can end
 
-        // Fade out the quest text
+        // fade out the quest text
         StartCoroutine(FadeOutQuestText());
 
-        // Trigger dropping of machines
+        // trigger dropping of machines
         MachineDropper[] machineDroppers = FindObjectsOfType<MachineDropper>();
         foreach (MachineDropper dropper in machineDroppers)
         {
@@ -53,7 +53,7 @@ public class QuestManager : MonoBehaviour
 
         yield return new WaitForSeconds(7.0f);
 
-        // Change background music clip
+        // change background music clip
         if (backgroundMusicObject != null && newBackgroundMusicClip != null)
         {
             BackgroundMusic backgroundMusic = backgroundMusicObject.GetComponent<BackgroundMusic>();
@@ -63,16 +63,16 @@ public class QuestManager : MonoBehaviour
             }
         }
 
-        // Play audio sequence
+        // play audio sequence
         if (audioManager != null)
         {
             audioManager.PlayAudioSequence();
         }
 
-        // Wait for the audio sequence to complete
+        // wait for the audio sequence to complete
         yield return new WaitWhile(() => audioManager.IsPlaying());
 
-        // Fade to black and load the next scene
+        // fade to black and load the next scene in the background
         StartCoroutine(FadeToBlackAndLoadScene());
     }
 
@@ -89,8 +89,6 @@ public class QuestManager : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
-
-        // Ensure the text is completely faded out
         questText.color = endColor;
     }
 
@@ -107,11 +105,7 @@ public class QuestManager : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
-
-        // Ensure the screen is completely black
         fadeImage.color = endColor;
-
-        // Load the "Spaceship" scene
         SceneManager.LoadScene("Spaceship");
     }
 }

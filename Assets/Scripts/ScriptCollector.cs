@@ -7,14 +7,14 @@ public class ScriptCollector : MonoBehaviour
     public Text itemNameText;
     public Text descriptionText;
     public float displayDuration = 3f;
-    public float fadeDuration = 0.5f; // Duration for fading in and out
+    public float fadeDuration = 0.5f; 
 
-    private Color transparentColor = new Color(1f, 1f, 1f, 0f); // Transparent color
-    private Color opaqueColor = new Color(1f, 1f, 1f, 1f); // Opaque color
+    private Color transparentColor = new Color(1f, 1f, 1f, 0f); // transparent color
+    private Color opaqueColor = new Color(1f, 1f, 1f, 1f); // seenable color
 
     private void Start()
     {
-        // Set the initial transparency of the text elements to 0
+        // set the initial transparency of the text elements to 0
         itemNameText.color = transparentColor;
         descriptionText.color = transparentColor;
     }
@@ -23,7 +23,7 @@ public class ScriptCollector : MonoBehaviour
     {
         if (other.CompareTag("Script"))
         {
-            // Get the ScriptableObjectHolder component from the collected script object
+            // get the ScriptableObjectHolder component from the collected script object
             ScriptableObjectHolder holder = other.GetComponent<ScriptableObjectHolder>();
 
             if (holder != null && holder.inventoryItem != null)
@@ -32,18 +32,18 @@ public class ScriptCollector : MonoBehaviour
                 string itemName = holder.inventoryItem.itemName;
                 string description = holder.inventoryItem.description;
 
-                // Update the UI text elements with the script information
+                // update the UI text  with the script information
                 itemNameText.text = itemName;
                 descriptionText.text = description;
 
-                // Activate the UI text elements
+                // activate the UI text 
                 itemNameText.gameObject.SetActive(true);
                 descriptionText.gameObject.SetActive(true);
 
-                // Start a coroutine to fade in the text elements
+                // Start to fade in the text elements
                 StartCoroutine(FadeTextElements(true));
 
-                // Start a coroutine to fade out the text elements after a certain duration
+                // Start to fade out the text elements after a certain duration
                 StartCoroutine(FadeTextElementsAfterDelay(false, displayDuration));
             }
         }

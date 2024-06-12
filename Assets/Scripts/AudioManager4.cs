@@ -19,8 +19,8 @@ public class AudioManager4 : MonoBehaviour
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        playerMovement = FindObjectOfType<CharacterMovement>(); // Find the PlayerMovement script in the scene
-        gameManager = FindObjectOfType<GameManager>(); // Find the GameManager script in the scene
+        playerMovement = FindObjectOfType<CharacterMovement>(); 
+        gameManager = FindObjectOfType<GameManager>(); 
     }
 
     public void PlayAudioSequence()
@@ -34,7 +34,7 @@ public class AudioManager4 : MonoBehaviour
 
         for (int i = 0; i < audioClips.Length; i++)
         {
-            yield return new WaitForSeconds(clipDelays[i]); // Wait for the specified delay
+            yield return new WaitForSeconds(clipDelays[i]); // waiting for entered delay
 
             audioSource.clip = audioClips[i];
             audioSource.Play();
@@ -49,24 +49,13 @@ public class AudioManager4 : MonoBehaviour
 
         isPlaying = false;
 
-        // Disable player movement after audio finishes
-        if (playerMovement != null)
+        if (playerMovement != null) 
         {
-            playerMovement.enabled = false;
+            playerMovement.enabled = false; // disable player movement after dialogue ends
         }
-        else
-        {
-            Debug.LogError("PlayerMovement script not found in the scene.");
-        }
-
-        // Adjust the transparency of the display text after audio finishes
         if (gameManager != null)
         {
             gameManager.AdjustTextTransparency(1f); // Set transparency to 100%
-        }
-        else
-        {
-            Debug.LogError("GameManager script not found in the scene.");
         }
     }
 

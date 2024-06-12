@@ -2,66 +2,65 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f; // Speed of normal movement
-    public float rotationSpeed = 2f; // Speed of character rotation
-    public float jumpForce = 5f; // Force applied when jumping
-    public Transform cameraTransform; // Reference to the camera's transform
-    public float jumpCooldown = 1f; // Cooldown time between jumps
-    public float sprintSpeed = 8f; // Speed when sprinting
-    public float interactionDistance = 2.0f; // Distance to interact with objects
-    public float holdDistance = 2.0f; // Distance to hold the object in front of the camera
+    public float moveSpeed = 5f; 
+    public float rotationSpeed = 2f; 
+    public float jumpForce = 5f; 
+    public Transform cameraTransform; 
+    public float jumpCooldown = 1f; 
+    public float sprintSpeed = 8f; 
+    public float interactionDistance = 2.0f; 
+    public float holdDistance = 2.0f; 
 
     private Rigidbody rb;
-    private bool canJump = true; // Flag to determine if the character can jump
-    private float originalMoveSpeed; // Original move speed
-    private bool isSprinting; // Flag to track sprinting state
-    private GameObject pickedUpObject = null; // Reference to the currently picked up object
-    private Transform originalParent; // Original parent of the picked up object
-    private Vector3 originalScale; // Original scale of the picked up object
-    private Vector3 desiredScale = new Vector3(1f, 1f, 1f); // Desired scale when dropping the object
+    private bool canJump = true; // bool if i can jump
+    private float originalMoveSpeed; 
+    private bool isSprinting; // sprinting state (sprinting or not)
+    private GameObject pickedUpObject = null; // object player picked up
+    private Transform originalParent; // parent of the picked-up object that will be released
+    private Vector3 originalScale; // original scale of the picked up object
+    private Vector3 desiredScale = new Vector3(1f, 1f, 1f); // scale when dropping object so that it doesnt change shape
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
 
-        // Lock rotation of the Rigidbody
+        // so that bean won't fall - stand upwards
         rb.freezeRotation = true;
 
-        // Check if the cameraTransform reference is assigned
+        // check the camera reference
         if (cameraTransform == null)
         {
             Debug.LogError("Camera Transform not assigned!");
-            enabled = false; // Disable the script if cameraTransform is not assigned
+            enabled = false; 
         }
 
-        // Hide cursor and lock it to the center of the screen
+        // hide cursor + lock it to the center of the screen
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        originalMoveSpeed = moveSpeed; // Store original move speed
+        originalMoveSpeed = moveSpeed; 
     }
 
     void FixedUpdate()
     {
-        // Movement controls
-        float moveHorizontal = Input.GetAxisRaw("Horizontal"); // Use GetAxisRaw to get input without smoothing
-        float moveVertical = Input.GetAxisRaw("Vertical"); // Use GetAxisRaw to get input without smoothing
+        // movement controls
+        float moveHorizontal = Input.GetAxisRaw("Horizontal"); // getting input without smoothing
+        float moveVertical = Input.GetAxisRaw("Vertical"); // getting input without smoothing
 
-        // Calculate movement direction based on the camera's forward direction
+        // going straight where the camera is looking
         Vector3 forward = cameraTransform.forward;
-        forward.y = 0; // Keep the movement horizontal
+        forward.y = 0; // keep movement horizontal - can't go up and down
         Vector3 movement = (forward * moveVertical + cameraTransform.right * moveHorizontal).normalized;
 
-        // Apply movement
+        // start movement
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
 
-        // Handle sprinting
         if (isSprinting)
         {
             Sprint();
         }
 
-        // Update the position and rotation of the picked-up object
+        // update the position and rotation of the picked-up object
         if (pickedUpObject != null)
         {
             UpdatePickedUpObjectPositionAndRotation();
@@ -70,25 +69,25 @@ public class CharacterMovement : MonoBehaviour
 
     void Update()
     {
-        // Hide cursor when clicking
+        // hide cursor when player clicks
         if (Input.GetMouseButtonDown(0))
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
 
-        // Show cursor when hitting escape
+        // show cursor when pressed esc
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
 
-        // Character rotation with mouse input
+        // rotating camera
         float mouseX = Input.GetAxis("Mouse X");
         transform.Rotate(Vector3.up, mouseX * rotationSpeed);
 
-        // Jumping with cooldown
+        // jumping - cooldown so that you can't spam jump and fly in the sky with it
         if (Input.GetKeyDown(KeyCode.Space) && canJump)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -96,7 +95,7 @@ public class CharacterMovement : MonoBehaviour
             Invoke("ResetJump", jumpCooldown); // Reset jumping after cooldown
         }
 
-        // Check for sprinting input
+        // shift must be held for sprinting
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             StartSprint();
@@ -106,7 +105,7 @@ public class CharacterMovement : MonoBehaviour
             StopSprint();
         }
 
-        // Check for block interaction input
+        // "E" for picking up crates
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (pickedUpObject == null)
@@ -128,7 +127,6 @@ public class CharacterMovement : MonoBehaviour
 
     void Sprint()
     {
-        // Increase movement speed while sprinting
         moveSpeed = sprintSpeed;
     }
 
@@ -140,7 +138,7 @@ public class CharacterMovement : MonoBehaviour
 
     void ResetJump()
     {
-        canJump = true; // Enable jumping after cooldown
+        canJump = true; //enable jump after cooldown
     }
 
     void TryPickUpObject()
@@ -152,35 +150,24 @@ public class CharacterMovement : MonoBehaviour
             {
                 pickedUpObject = hit.collider.gameObject;
                 originalParent = pickedUpObject.transform.parent;
-                pickedUpObject.transform.SetParent(cameraTransform, true); // Preserve world position
+                pickedUpObject.transform.SetParent(cameraTransform, true); // save world position
                 pickedUpObject.GetComponent<Rigidbody>().isKinematic = true;
-                originalScale = pickedUpObject.transform.localScale; // Store original scale
+                originalScale = pickedUpObject.transform.localScale; // store original scale so that it wont change shape
             }
         }
     }
 
     void DropObject()
 {
-    // Check if the object is below the terrain
-    RaycastHit hit;
-    if (Physics.Raycast(pickedUpObject.transform.position, Vector3.down, out hit))
-    {
-        if (hit.point.y < 0)
-        {
-            // If the object is below the terrain, move it to the terrain surface
-            pickedUpObject.transform.position = hit.point + Vector3.up * pickedUpObject.transform.localScale.y * 0.5f;
-        }
-    }
-
     pickedUpObject.GetComponent<Rigidbody>().isKinematic = false;
-    pickedUpObject.transform.SetParent(originalParent, true); // Preserve world position
-    pickedUpObject.transform.localScale = desiredScale; // Set the object's scale to the desired scale
+    pickedUpObject.transform.SetParent(originalParent, true); // save world position
+    pickedUpObject.transform.localScale = desiredScale; // reset object's scale - no shape change
     pickedUpObject = null;
 }
 
     void UpdatePickedUpObjectPositionAndRotation()
     {
         Vector3 holdPosition = cameraTransform.position + cameraTransform.forward * holdDistance;
-        pickedUpObject.transform.position = holdPosition; // Move the object to the hold position
+        pickedUpObject.transform.position = holdPosition; // move original object to where it was released
     }
 }

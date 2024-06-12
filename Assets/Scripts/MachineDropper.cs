@@ -3,7 +3,7 @@ using UnityEngine;
 public class MachineDropper : MonoBehaviour
 {
     public float dropDuration = 3f;
-    public AudioClip fallingSound; // Sound to play when the machine starts falling
+    public AudioClip fallingSound; // machine falling sound
 
     private bool isDropping = false;
     private Vector3 initialPosition;
@@ -15,7 +15,7 @@ public class MachineDropper : MonoBehaviour
         // Save the initial position as the final position
         finalPosition = transform.position;
 
-        // Move the machine to a higher position
+        // Move the machine up in the sky
         initialPosition = finalPosition + Vector3.up * 100f;
         transform.position = initialPosition;
 

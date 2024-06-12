@@ -9379,16 +9379,10 @@ MonoBehaviour:
   audioClips:
   - {fileID: 8300000, guid: eea5462ba733c4e3bbfee35a0167d242, type: 3}
   - {fileID: 8300000, guid: d7631193ec7aa4d1782ac39d47d4e92f, type: 3}
-  - {fileID: 8300000, guid: f223486ed15f84c369018cac56bfdfc8, type: 3}
-  - {fileID: 8300000, guid: d0f1ff62fd3304eda9af27f70e63daf7, type: 3}
   - {fileID: 8300000, guid: 4a0f1e934b54a4671907afad4c0fb2d1, type: 3}
   - {fileID: 8300000, guid: e62f8422a50e64d6bb9fd81f5925e2ab, type: 3}
-  - {fileID: 8300000, guid: 7bb18cddaf8a44130a353eaf116d9d23, type: 3}
   - {fileID: 8300000, guid: 1ebf51588fcf6462b991163152f839d0, type: 3}
   clipDelays:
-  - 1
-  - 1
-  - 1
   - 1
   - 1
   - 1
@@ -9402,16 +9396,6 @@ MonoBehaviour:
     desert planet teeming with ancient secrets and hidden dangers. Our mission, sanctioned
     by the Galactic Exploration Initiative, is to explore the surface of Aridora,
     investigate anomalies, and gather valuable data to unravel its mysteries.
-  - 'However, our recent exploration efforts on Aridora were interrupted by unexpected
-    events. As we delved deeper into our investigations, we detected unusual energy
-    readings emanating from the planet''s surface. Shortly thereafter, a powerful
-    sandstorm engulfed our position, and strange alien devices appeared from the
-    skies, crashing down around us.  '
-  - These alien intruders, while not directly hostile, seemed intent on disrupting
-    our mission. It appears that they somehow infected our ship's computer systems
-    with a malicious virus, causing critical malfunctions and endangering our crew.
-    In response, we initiated emergency protocols, forcibly waking you from stasis
-    to assess the situation and ensure the safety of our crew.
   - It's important to note, Commander, that what you experienced on Aridora was not
     entirely real. It was a simulation designed to test your skills and readiness
     for the challenges that lie ahead. While the dangers you faced were simulated,
@@ -9421,9 +9405,6 @@ MonoBehaviour:
     simulated. Sandstorms rage across its desolate landscape, and who knows what
     other challenges await us. However, with your leadership and my guidance, I'm
     confident we can overcome any obstacle that stands in our way.
-  - Take your time to familiarize yourself with the ship's layout and equipment.
-    When you're ready, we'll embark on this thrilling adventure together. Just let
-    me know, Commander, and we'll set course for Aridora.
   - Feel free to explore the spaceship at your own pace. I'll be here whenever you
     need me, ready to provide assistance or answer any questions you may have. Let
     me know if you need further adjustments or if there's anything else I can assist

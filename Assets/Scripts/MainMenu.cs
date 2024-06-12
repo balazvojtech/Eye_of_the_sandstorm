@@ -53,31 +53,26 @@ public class MainMenu : MonoBehaviour
         StartCoroutine(FadeAudio(menuMusic, menuMusic.volume, 0f, fadeSpeed));
 
         yield return new WaitForSeconds(fadeSpeed);
-
-        // Hold the black screen for the specified delay
         yield return new WaitForSeconds(blackScreenDelay);
 
-        // Start loading the game scene asynchronously
+        // start loading the game scene in the background
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
-        // Wait until the new scene is fully loaded
+        // wait until it fully loads
         while (!asyncLoad.isDone)
         {
             yield return null;
         }
 
-        // Unload the current scene
+        // unload main menu - scene switch
         SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
 
-        // Fade in from black
         image.CrossFadeAlpha(0f, fadeSpeed, false);
         yield return new WaitForSeconds(fadeSpeed);
 
-        // Deactivate the fadePanel
         fadePanel.SetActive(false);
 
-        // Deactivate the menu canvas
-        menuCanvas.SetActive(false);
+        menuCanvas.SetActive(false); //deactivate menu
     }
 
     IEnumerator FadeAudio(AudioSource audioSource, float startVolume, float endVolume, float fadeDuration)
